@@ -7,7 +7,7 @@
   "scripts": {
     "demo": "babel-node demo/index.js",
     "test": "babel-node node_modules/.bin/isparta cover node_modules/.bin/_mocha",
-    "es5": "babel ./src -d ./lib --source-maps inline && node bin/copyLess.js",
+    "es5": "babel ./src -d ./lib --source-maps inline",
     "prepublish": "npm run es5"
   },
   "repository": {
