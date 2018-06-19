@@ -95,7 +95,7 @@ export default class Markdown {
     const plugin = this.plugins_[name]
 
     if (!plugin) {
-      console.warn(`render时找不到插件${name}`)
+      console.warn(`[PLUGGABLE-MARKDOWN-WARN] render时找不到插件${name}`)
       return ''
     }
 
@@ -103,7 +103,7 @@ export default class Markdown {
       return ''
     }
 
-    console.log(`执行插件 ${name} render流程...`)
+    console.log(`[PLUGGABLE-MARKDOWN] 执行插件 ${name} render流程...`)
     return plugin.render(this.context_, pluginToken)
   }
 
@@ -119,7 +119,7 @@ export default class Markdown {
     const plugin = this.plugins_[name]
 
     if (!plugin) {
-      console.warn(`token时找不到插件${name}`)
+      console.warn(`[PLUGGABLE-MARKDOWN-WARN] token时找不到插件${name}`)
       return tokens
     }
 
@@ -127,7 +127,7 @@ export default class Markdown {
       return tokens
     }
 
-    console.log(`执行插件 ${name} token处理流程...`)
+    console.log(`[PLUGGABLE-MARKDOWN] 执行插件 ${name} token处理流程...`)
     return plugin.token(this.context_, pluginToken, pluginTokenIndex, tokens, src)
   }
 }
