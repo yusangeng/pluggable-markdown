@@ -12,7 +12,7 @@ export default function tok (pluginHandler) {
     ret = originalTok.call(this)
   }
 
-  console.log(`[PLUGGABLE-MARKDOWN] token: ${this.token.type}——\n${ret}`)
+  console.log(`[PLUGGABLE-MARKDOWN] tok, token: ${this.token.type}——\n${ret}`)
 
   return ret
 }
