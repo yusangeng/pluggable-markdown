@@ -1,21 +1,5 @@
 import marked from 'marked'
-
-function merge (obj) {
-  var i = 1
-  var target
-  var key
-
-  for (; i < arguments.length; i++) {
-    target = arguments[i]
-    for (key in target) {
-      if (Object.prototype.hasOwnProperty.call(target, key)) {
-        obj[key] = target[key]
-      }
-    }
-  }
-
-  return obj
-}
+import merge from './merge'
 
 export default function myMarked (src, opt, tokensHandler, resultHandler) {
   // throw error in case of non string input
@@ -29,10 +13,8 @@ export default function myMarked (src, opt, tokensHandler, resultHandler) {
 
   opt = merge({}, marked.defaults, opt || {})
 
-  var highlight = opt.highlight
-  var tokens
-  var pending
-  var i = 0
+  const { highlight, tokenizeOnly } = opt
+  let tokens
 
   try {
     tokens = marked.Lexer.lex(src, opt)
@@ -42,15 +24,19 @@ export default function myMarked (src, opt, tokensHandler, resultHandler) {
 
   tokens = tokensHandler(tokens)
 
-  pending = tokens.length
+  if (tokenizeOnly) {
+    return resultHandler(null, '')
+  }
 
-  var done = function (err) {
+  let pending = tokens.length
+
+  const done = function done (err) {
     if (err) {
       opt.highlight = highlight
       return resultHandler(err)
     }
 
-    var out
+    let out
 
     try {
       out = marked.Parser.parse(tokens, opt)
@@ -60,7 +46,7 @@ export default function myMarked (src, opt, tokensHandler, resultHandler) {
 
     opt.highlight = highlight
 
-    return err ? resultHandler(err) : resultHandler(null, out)
+    return resultHandler(err, out)
   }
 
   if (!highlight || highlight.length < 3) {
@@ -71,7 +57,7 @@ export default function myMarked (src, opt, tokensHandler, resultHandler) {
 
   if (!pending) return done()
 
-  for (; i < tokens.length; i++) {
+  for (let i = 0; i < tokens.length; i++) {
     ;(function (token) {
       if (token.type !== 'code') {
         return --pending || done()

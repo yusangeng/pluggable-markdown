@@ -2,6 +2,7 @@ import marked from 'marked'
 import myMarked from './marked'
 import token from './token'
 import tok from './tok'
+import merge from './Merge'
 
 marked.Lexer.prototype.token = token
 
@@ -20,6 +21,10 @@ export default class Markdown {
 
   get tokens () {
     return this.tokens_
+  }
+
+  get options () {
+    return this.options_
   }
 
   constructor (options = {}) {
@@ -41,6 +46,7 @@ export default class Markdown {
     this.plugins_[name] = plugin
   }
 
+  // 词法分析加转译
   exec (src) {
     const self = this
     const backupTok = marked.Parser.prototype.tok
@@ -53,11 +59,23 @@ export default class Markdown {
     // 这里必须清空, 否则本次执行会和上次有冲突
     this.context_ = {}
 
-    myMarked(src, this.options_,
+    myMarked(src, this.options,
       this._handleTokens.bind(this, src),
       this._handleResult.bind(this))
 
     marked.Parser.prototype.tok = backupTok
+  }
+
+  // 只做词法分析
+  tokenize (src) {
+    // 这里必须清空, 否则本次执行会和上次有冲突
+    this.context_ = {}
+
+    const { options } = this
+    const tokenizeOnly = true
+    myMarked(src, merge({}, options, { tokenizeOnly }),
+      this._handleTokens.bind(this, src),
+      this._handleResult.bind(this))
   }
 
   _handleTokens (src, tokens) {
@@ -104,7 +122,7 @@ export default class Markdown {
     }
 
     console.log(`[PLUGGABLE-MARKDOWN] 执行插件 ${name} render流程...`)
-    return plugin.render(this.context_, pluginToken)
+    return plugin.render(this.context, pluginToken)
   }
 
   _handleResult (err, output) {
@@ -128,6 +146,6 @@ export default class Markdown {
     }
 
     console.log(`[PLUGGABLE-MARKDOWN] 执行插件 ${name} token处理流程...`)
-    return plugin.token(this.context_, pluginToken, pluginTokenIndex, tokens, src)
+    return plugin.token(this.context, pluginToken, pluginTokenIndex, tokens, src)
   }
 }
