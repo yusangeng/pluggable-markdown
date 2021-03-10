@@ -32,5 +32,6 @@ declare module 'pluggable-markdown' {
     tokenize(src: string): void;
   }
 
+  export { Transformer };
   export default Transformer;
 }
