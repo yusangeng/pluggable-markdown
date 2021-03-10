@@ -1,3 +1,4 @@
-import Markdown from './Markdown'
+import Transformer from './Transformer';
 
-export default Markdown
+export { Transformer };
+export default Transformer;
