@@ -1,9 +1,10 @@
 {
   "name": "pluggable-markdown",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "可插入自定义语句的markdown.",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
+  "types": "./module.d.ts",
   "scripts": {
     "demo": "babel-node demo/index.js",
     "es5": "babel ./src -d ./lib --source-maps inline",

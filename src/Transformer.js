@@ -42,26 +42,16 @@ export default class Transformer {
 
   // 词法分析加转译
   exec(src) {
-    const self = this;
-    const backupTok = marked.Parser.prototype.tok;
-
-    marked.Parser.prototype.tok = function () {
-      // this是Parser实例，self是Markdown实例
-      return tok.call(this, self._handlePluginRender.bind(self));
-    };
-
     // 这里必须清空, 否则本次执行会和上次有冲突
     this.context_ = {};
 
-    myMarked(
+    marked(
       src,
       this.options,
       this._handleTokens.bind(this, src),
       this._handleResult.bind(this),
       this._handlePluginRender.bind(this)
     );
-
-    marked.Parser.prototype.tok = backupTok;
   }
 
   // 只做词法分析
@@ -71,7 +61,7 @@ export default class Transformer {
 
     const { options } = this;
     const tokenizeOnly = true;
-    myMarked(src, { ...options, tokenizeOnly }, this._handleTokens.bind(this, src), this._handleResult.bind(this));
+    marked(src, { ...options, tokenizeOnly }, this._handleTokens.bind(this, src), this._handleResult.bind(this));
   }
 
   _handleTokens(src, tokens) {

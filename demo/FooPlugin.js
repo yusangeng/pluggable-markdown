@@ -1,13 +1,13 @@
 export default class FooPlugin {
-  get name () {
-    return 'foo'
+  get name() {
+    return 'foo';
   }
 
-  token (context, token, index, tokens) {
-    return tokens
+  token(context, token, index, tokens) {
+    return tokens;
   }
 
-  render (context, token) {
-    return `<Foo data="${token.args}" />\n`
+  render(context, token) {
+    return `<Foo data="${token.args}" />\n`;
   }
 }
