@@ -1,5 +1,3 @@
-import { Tokens } from 'marked';
-
 declare module 'pluggable-markdown' {
   type Token = {
     type: string;
@@ -20,7 +18,7 @@ declare module 'pluggable-markdown' {
 
   type TransformerOptions = Record<string, any>;
 
-  export declare class Transformer {
+  class Transformer {
     readonly output: any;
     readonly error: any;
     readonly content: TransformerContext;

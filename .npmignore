@@ -1,1 +1,6 @@
 coverage
+.vscode
+demo
+.babelrc
+.gitignore
+.travis.yml
